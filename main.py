@@ -35,16 +35,16 @@ import os
 import sys
 from argparse import ArgumentParser
 
-from linebot import (
-    LineBotApi, WebhookHandler
-)
-from linebot.exceptions import (
-    InvalidSignatureError
-)
-from linebot.models import (
-    MessageEvent,
-    TextMessage ,ImageMessage
-)
+# from linebot import (
+#     LineBotApi, WebhookHandler
+# )
+# from linebot.exceptions import (
+#     InvalidSignatureError
+# )
+# from linebot.models import (
+#     MessageEvent,
+#     TextMessage ,ImageMessage
+# )
 
 from os.path import join, dirname
 from dotenv import load_dotenv
