@@ -7,7 +7,7 @@ from flask import redirect, url_for, render_template, flash, Flask, request, abo
 # ファイル名をチェックする関数
 from werkzeug.utils import secure_filename
 # 画像のダウンロード
-# from flask import send_from_directory
+from flask import send_from_directory
 import numpy as np
 import cv2
 import cloudinary
@@ -74,11 +74,11 @@ SUB_DIR = 'actress/'
 
 app = Flask(__name__)
 
-# cloudinary.config.update = ({
-#     'cloud_name':os.environ.get('CLOUDINARY_CLOUD_NAME'),
-#     'api_key': os.environ.get('CLOUDINARY_API_KEY'),
-#     'api_secret': os.environ.get('CLOUDINARY_API_SECRET')
-# })
+cloudinary.config.update = ({
+    'cloud_name':os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'api_key': os.environ.get('CLOUDINARY_API_KEY'),
+    'api_secret': os.environ.get('CLOUDINARY_API_SECRET')
+})
 
 
 app.secret_key = os.getenv('SECRET_KEY', 'for dev')
@@ -101,9 +101,9 @@ def allowed_file(filename):
         filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
-# @app.route('/images/<path:path>')
-# def send_js(path):
-#     return send_from_directory(SAVE_DIR, path)
+@app.route('/images/<path:path>')
+def send_js(path):
+    return send_from_directory(SAVE_DIR, path)
 
 # ファイルを受け取る方法の指定
 @app.route('/', methods=['GET','POST'])
