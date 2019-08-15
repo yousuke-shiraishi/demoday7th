@@ -50,7 +50,6 @@ gevent==1.2.2
 glob2==0.6
 glue-core==0.13.4
 glue-vispy-viewers==0.10
-gmpy2==2.0.8
 google-images-download==2.8.0
 greenlet==0.4.12
 grpcio==1.19.0
