@@ -141,7 +141,6 @@ pydotplus==2.0.2
 pyflakes==1.6.0
 Pygments==2.2.0
 pynput==1.4.2
-pyodbc==4.0.22
 PyOpenGL==3.1.1a1
 pyOpenSSL==17.5.0
 pyparsing==2.2.0
