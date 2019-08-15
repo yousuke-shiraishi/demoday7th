@@ -69,16 +69,10 @@ ipython-genutils==0.2.0
 ipywidgets==7.1.1
 isort==4.2.15
 itsdangerous==0.24
-ja-ginza-nopn==1.0.2
-Janome==0.3.9
 jdcal==1.3
 jedi==0.11.1
 Jinja2==2.10
 jsonschema==2.6.0
-Keras==2.2.4
-Keras-Applications==1.0.7
-keras-compressor==0.0.1
-Keras-Preprocessing==1.0.9
 lazy-object-proxy==1.3.1
 lightgbm==2.2.3
 line-bot-sdk==1.12.1
