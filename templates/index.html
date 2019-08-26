@@ -25,7 +25,7 @@
     {% if data %}
         {% for path,es in data %}
             <div>
-            <img src="images/{{ path }}" style="margin-top: 10px; vertical-align: bottom; width: 200px;">
+            <img src="{{ path }}" style="margin-top: 10px; vertical-align: bottom; width: 200px;">
             {{ es }}
             </div>
         {% endfor %}
