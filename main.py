@@ -9,7 +9,6 @@ from werkzeug.utils import secure_filename
 from flask import send_from_directory
 import numpy as np
 import cv2
-import cloudinary
 from datetime import datetime
 import string
 import glob
@@ -92,43 +91,7 @@ img1 =[]
 exists_img=[]
 img_url=""
 
-# s3 = boto3.resource('s3')
 s3 = boto3.client('s3')
-def get_public_url(bucket, target_object_path):
-    """
-    対象のS3ファイルのURLを取得する
-
-    Parameters
-    ----------
-    bucket: string
-        S3のバケット名
-    target_object_path: string
-        取得したいS3内のファイルパス
-
-    Returns
-    ----------
-    url: string
-        S3上のオブジェクトのURL
-    """
-    bucket_location = s3.get_bucket_location(Bucket=bucket)
-    return "https://s3-{0}.amazonaws.com/{1}/{2}".format(
-        bucket_location['LocationConstraint'],
-        bucket,
-        target_object_path)
-
-
-
-# def imread_web(url):
-#     # 画像をリクエストする
-#     res = requests.get(url)
-#     img = None
-#     # Tempfileを作成して即読み込む
-#     with tempfile.NamedTemporaryFile(dir='./') as fp:
-#         fp.write(res.content)
-#         fp.file.seek(0)
-#         img = cv2.imread(fp.name,cv2.IMREAD_GRAYSCALE)
-#     return img
-
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
@@ -200,21 +163,13 @@ def upload():
         user=POSTG_ID,
         password=POSTG_PW)
         c = conn.cursor()
-        c.execute('SELECT * FROM flask_similar limit 20')
+        c.execute('SELECT * FROM flask_similar')
         rows = c.fetchall()
         for row in rows:
-    
-
             if not row[1].endswith(('.png', '.jpg', '.jpeg')):
                 continue
 
-            # comparing_img_path = imread_web(get_public_url(bucket,"actress/"+ row[1]))
             try:
-                # comparing_des = 0
-                # comparing_img = comparing_img_path
-                # comparing_img = cv2.resize(comparing_img, img_size)
-                # (_, comparing_des) = detector.detectAndCompute(comparing_img, None)
-                # matches = bf.match(target_des, comparing_des)
                 numpy_img_data = np.array(row[2][row[1]]).astype(np.uint8)
                 matches = bf.match(target_des, numpy_img_data)
                 dist = [m.distance for m in matches]
@@ -225,9 +180,6 @@ def upload():
             except cv2.error:
                 score = 100000
             ret[row[1]] = score
-        # f = open('sample.binaryfile','wb')
-        # pickle.dump(com_img_dists,f)
-        # f.close
         conn.close()
 
     ############################################################
@@ -236,7 +188,12 @@ def upload():
     estimated_d =[]
     exists_img =[]
     for file in dic_sorted:
-        img_path = get_public_url(AWS_STORAGE_BUCKET_NAME,"actress/"+ file[0])
+        img_path = s3.generate_presigned_url(
+        ClientMethod = 'get_object',
+        Params = {'Bucket' : AWS_STORAGE_BUCKET_NAME, 'Key' : "actress/"+ file[0]},
+        ExpiresIn = 10,
+        HttpMethod = 'GET')
+        # img_path = get_public_url(AWS_STORAGE_BUCKET_NAME,"actress/"+ file[0])
         # obj = s3.Object(AWS_STORAGE_BUCKET_NAME, "actress/"+ file[0])
         print(img_path)
         estimated_d.append(file[1])
