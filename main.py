@@ -42,11 +42,11 @@ from dotenv import load_dotenv
 import psycopg2
 import boto3
 
-load_dotenv(verbose=True)
+# load_dotenv(verbose=True)
 
 
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
+# dotenv_path = join(dirname(__file__), '.env')
+# load_dotenv(dotenv_path)
 
 app = Flask(__name__)
 # LOG = create_logger(app)
@@ -225,7 +225,7 @@ img1 =[]
 exists_img=[]
 img_url=""
 
-s3 = boto3.client('s3')
+# s3 = boto3.client('s3')
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
@@ -252,7 +252,7 @@ def upload():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     shutil.rmtree(SAVE_DIR)
     os.mkdir(SAVE_DIR)
-
+    s3 = boto3.client('s3')
     # # ファイルがなかった場合の処理
     # if 'file' not in request.files:
     #     flash('ファイルがありません','failed')
@@ -353,6 +353,7 @@ def callback():
 
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_image_message(event):
+    s3 = boto3.client('s3')
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     message_content = line_bot_api.get_message_content(event.message.id)
     shutil.rmtree(SAVE_DIR)
