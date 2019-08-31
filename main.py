@@ -15,7 +15,7 @@ from datetime import datetime
 import string
 import glob
 from PIL import Image
-from flask.logging import create_logger
+# from flask.logging import create_logger
 # from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 # from flask_wtf import Form
 # from wtforms import TextField, PasswordField, validators
@@ -49,7 +49,7 @@ dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
 app = Flask(__name__)
-LOG = create_logger(app)
+# LOG = create_logger(app)
 # login_manager = LoginManager()
 # login_manager.login_view =  "login"
 # login_manager.init_app(app)
@@ -341,7 +341,7 @@ def callback():
 
     # get request body as text
     body = request.get_data(as_text=True)
-    LOG.info("Request body: " + body)
+    # LOG.info("Request body: " + body)
 
     # handle webhook body
     try:
