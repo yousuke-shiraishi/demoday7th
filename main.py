@@ -252,7 +252,7 @@ def upload():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     shutil.rmtree(SAVE_DIR)
     os.mkdir(SAVE_DIR)
-    s3 = boto3.client('s3')
+    s3 = boto3.client('s3', config=Config(signature_version='s3v4'))
     # # ファイルがなかった場合の処理
     # if 'file' not in request.files:
     #     flash('ファイルがありません','failed')
