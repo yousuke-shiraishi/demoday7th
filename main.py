@@ -416,7 +416,7 @@ def handle_image_message(event):
         img_path = s3.generate_presigned_url(
         ClientMethod = 'get_object',
         Params = {'Bucket' : AWS_STORAGE_BUCKET_NAME, 'Key' : "actress/"+ file[0]},
-        ExpiresIn = 10,
+        ExpiresIn = 60,
         HttpMethod = 'GET')
         if file[1] >= 0.85:
             estimated_d.append("類似度 高")
