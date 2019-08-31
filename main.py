@@ -15,6 +15,7 @@ from datetime import datetime
 import string
 import glob
 from PIL import Image
+from botocore.client import Config
 # from flask.logging import create_logger
 # from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 # from flask_wtf import Form

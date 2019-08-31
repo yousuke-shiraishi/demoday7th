@@ -2,6 +2,7 @@ absl-py==0.7.1
 albumentations==0.2.3
 appdirs==1.4.3
 boto3==1.9.210
+botocore==1.12.212
 backports.shutil-get-terminal-size==1.0.0
 certifi==2019.3.9
 cffi==1.11.4
