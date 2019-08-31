@@ -253,7 +253,7 @@ def upload():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     shutil.rmtree(SAVE_DIR)
     os.mkdir(SAVE_DIR)
-    s3 = boto3.client('s3', region='ap-northeast-1',config=Config(signature_version='s3v4'))
+    s3 = boto3.client('s3', region_name='ap-northeast-1',config=Config(signature_version='s3v4'))
     # # ファイルがなかった場合の処理
     # if 'file' not in request.files:
     #     flash('ファイルがありません','failed')
@@ -354,7 +354,7 @@ def callback():
 
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_image_message(event):
-    s3 = boto3.client('s3', region='ap-northeast-1',config=Config(signature_version='s3v4'))
+    s3 = boto3.client('s3', region_name='ap-northeast-1',config=Config(signature_version='s3v4'))
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     message_content = line_bot_api.get_message_content(event.message.id)
     shutil.rmtree(SAVE_DIR)
