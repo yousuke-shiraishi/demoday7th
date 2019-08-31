@@ -204,7 +204,7 @@ SAVE_DIR = "./images"
 if not os.path.isdir(SAVE_DIR):
     os.mkdir(SAVE_DIR)
 
-IMG_DIR = './images_stock/'
+
 # アップロードされる拡張子の制限
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 app.config['UPLOAD_FOLDER'] = SAVE_DIR
@@ -324,9 +324,9 @@ def upload():
         img_path = s3.generate_presigned_url(
         ClientMethod = 'get_object',
         Params = {'Bucket' : AWS_STORAGE_BUCKET_NAME, 'Key' : "actress/"+ file[0]},
-        ExpiresIn = 10,
+        ExpiresIn = 60,
         HttpMethod = 'GET')
-        
+        print("aaaaa",img_path)
         estimated_d.append(file[1])
         exists_img.append(img_path)
         
