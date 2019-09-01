@@ -182,8 +182,8 @@ app = Flask(__name__)
 #     return redirect('/login')
 ###########################################################
 # get channel_secret and channel_access_token from your environment variable
-channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
-channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
+channel_secret = os.environ('LINE_CHANNEL_SECRET', None)
+channel_access_token = os.environ('LINE_CHANNEL_ACCESS_TOKEN', None)
 if channel_secret is None:
     print('Specify LINE_CHANNEL_SECRET as environment variable.')
     sys.exit(1)
@@ -200,7 +200,7 @@ DATABASE_URL = os.environ['DATABASE_URL']
 
 
 SUB_DIR = 'actress/'
-app.secret_key = os.getenv('SECRET_KEY', 'for dev')
+app.secret_key = os.environ('SECRET_KEY', 'for dev')
 SAVE_DIR = "./images"
 if not os.path.isdir(SAVE_DIR):
     os.mkdir(SAVE_DIR)
@@ -359,11 +359,13 @@ def handle_image_message(event):
     message_content = line_bot_api.get_message_content(event.message.id)
     shutil.rmtree(SAVE_DIR)
     os.mkdir(SAVE_DIR)
+    print("コンテンツ",message_content)
 
     # 画像として読み込み
     # img1 = content
     # stream = img1.stream
     # img_array = np.asarray(bytearray(stream.read()), dtype=np.uint8)
+    print("message_content.content",message_content.content)
     img_array = np.asarray( BytesIO(message_content.content), dtype=np.uint8)
     img = cv2.imdecode(img_array, 1)
     img_size = (200, 200)
@@ -429,7 +431,7 @@ def handle_image_message(event):
     
     line_bot_api.reply_message(
         event.reply_token,
-        messages =[
+        [
         ImageSendMessage(original_content_url = exists_img[0]),
         TextSendMessage(text=estimated_d[0]),
         ImageSendMessage(original_content_url = exists_img[1]),
