@@ -363,7 +363,7 @@ def handle_image_message(event):
     i = Image.open(BytesIO(message_content.content))
     save_path = SAVE_DIR +"/" + event.message.id + '.jpg'
     i.save(save_path)
-    filename = glob.glob(save_path)
+    filename = os.listdir(SAVE_DIR +"/")
     # img_array = np.asarray(bytes(str(filename),'utf8'), dtype=np.uint8)
     # img = cv2.imdecode(img_array, 1)
     img_size = (200, 200)
@@ -372,7 +372,7 @@ def handle_image_message(event):
 #     #####################################
     if SUB_DIR == 'actress/':
 
-        
+        filename = SAVE_DIR +"/" + filename
         target_img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
         target_img = cv2.resize(target_img, img_size)
 
