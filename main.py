@@ -200,7 +200,7 @@ DATABASE_URL = os.environ['DATABASE_URL']
 
 
 SUB_DIR = 'actress/'
-app.secret_key = os.environ('SECRET_KEY', 'for dev')
+app.secret_key = os.environ['SECRET_KEY']
 SAVE_DIR = "./images"
 if not os.path.isdir(SAVE_DIR):
     os.mkdir(SAVE_DIR)
