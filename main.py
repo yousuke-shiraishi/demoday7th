@@ -327,7 +327,7 @@ def upload():
         Params = {'Bucket' : AWS_STORAGE_BUCKET_NAME, 'Key' : "actress/"+ file[0]},
         ExpiresIn = 60,
         HttpMethod = 'GET')
-        print("aaaaa",img_path)
+        
         estimated_d.append(file[1])
         exists_img.append(img_path)
         
@@ -361,12 +361,8 @@ def handle_image_message(event):
     os.mkdir(SAVE_DIR)
     print("コンテンツ",message_content)
 
-    # 画像として読み込み
-    # img1 = content
-    # stream = img1.stream
-    # img_array = np.asarray(bytearray(stream.read()), dtype=np.uint8)
-    print("message_content.content",message_content.content)
-    img_array = np.asarray( BytesIO(message_content.content), dtype=np.uint8)
+
+    img_array = np.asarray(message_content.content, dtype=np.uint8)
     img = cv2.imdecode(img_array, 1)
     img_size = (200, 200)
     ret = {}
