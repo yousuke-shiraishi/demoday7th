@@ -371,8 +371,8 @@ def handle_image_message(event):
 
 #     #####################################
     if SUB_DIR == 'actress/':
-
-        filename = SAVE_DIR +"/" + filename
+        print(filename)
+        filename = SAVE_DIR +"/" + filename[0]
         target_img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
         target_img = cv2.resize(target_img, img_size)
 
