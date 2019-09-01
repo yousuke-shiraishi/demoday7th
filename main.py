@@ -360,9 +360,11 @@ def handle_image_message(event):
     shutil.rmtree(SAVE_DIR)
     os.mkdir(SAVE_DIR)
     print("コンテンツ",message_content)
-
-
-    img_array = np.asarray(message_content.content, dtype=np.uint8)
+    i = Image.open(BytesIO(message_content.content))
+    filename = SAVE_DIR + event.message.id + '.jpg'
+    i.save(filename)
+    filename
+    img_array = np.asarray(bytearray(filename), dtype=np.uint8)
     img = cv2.imdecode(img_array, 1)
     img_size = (200, 200)
     ret = {}
