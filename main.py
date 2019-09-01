@@ -430,12 +430,12 @@ def handle_image_message(event):
     line_bot_api.reply_message(
         event.reply_token,
         [
-        ImageSendMessage(original_content_url = exists_img[0]),
+        ImageSendMessage(original_content_url = exists_img[0],
+        preview_image_url=exists_img[0]),
         TextSendMessage(text=estimated_d[0]),
-        ImageSendMessage(original_content_url = exists_img[1]),
-        TextSendMessage(text=estimated_d[1]),
-        ImageSendMessage(original_content_url = exists_img[2]),
-        TextSendMessage(text=estimated_d[2])]
+        ImageSendMessage(original_content_url = exists_img[1],
+        preview_image_url=exists_img[1]),
+        TextSendMessage(text=estimated_d[1])]
     )
         
 
