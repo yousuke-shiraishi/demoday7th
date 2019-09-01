@@ -361,9 +361,9 @@ def handle_image_message(event):
     os.mkdir(SAVE_DIR)
     print("コンテンツ",message_content)
     i = Image.open(BytesIO(message_content.content))
-    filename = SAVE_DIR + event.message.id + '.jpg'
-    i.save(filename)
-    
+    save_path = SAVE_DIR + event.message.id + '.jpg'
+    i.save(save_path)
+    filename = glob.glob(save_path)
     img_array = np.asarray(bytearray(filename,'utf8'), dtype=np.uint8)
     img = cv2.imdecode(img_array, 1)
     img_size = (200, 200)
