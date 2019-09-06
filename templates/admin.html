@@ -3,16 +3,8 @@
     <h1>
         ファイルをアップロードしてデータベースを更新
     </h1>
-    <form action="{{ url_for('admin') }}" method = post enctype = multipart/form-data>
-        <p><input type="file" name="insert_img" accept="image/png, image/jpeg, image/jpg"></p>
+    <form action="{{ url_for('admin_ins') }}" method = post enctype = multipart/form-data>
+        <p><input type="file" name="insert_img1" accept="image/png, image/jpeg, image/jpg"></p>
         <input type = submit value = insert_img>
     </form>
-    <h1>
-        ファイルを削除してデータベースを更新
-    </h1>
-    <form action="{{ url_for('admin') }}" method = post>
-        <p><input type="text" name="delete_img"></p>
-        <input type = submit value = delete_img>
-    </form>
-
 {% endblock %}
