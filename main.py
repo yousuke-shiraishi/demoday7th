@@ -100,7 +100,10 @@ def admin_ins():
     fileToUpload = request.files['insert_img1']
                 # ファイルのチェック
     if fileToUpload and allowed_file(fileToUpload.filename):
-        fileToUpload = secure_filename(fileToUpload.filename)
+        fileToUpload
+    else:
+        flash('画像ファイルを入れてください','failed')
+        sys.exit(1)
 
     shutil.rmtree(SAVE_DIR)
     os.mkdir(SAVE_DIR)
@@ -256,7 +259,10 @@ def upload():
     img1 = request.files['image']
                 # ファイルのチェック
     if img1 and allowed_file(img1.filename):
-        img1 = secure_filename(img1.filename)
+        img1
+    else:
+        flash('画像ファイルを入れてください','failed')
+        sys.exit(1)
     stream = img1.stream
     img_array = np.asarray(bytearray(stream.read()), dtype=np.uint8)
     img = cv2.imdecode(img_array, 1)
