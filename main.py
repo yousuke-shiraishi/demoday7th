@@ -202,8 +202,6 @@ line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
 
-SUB_DIR = 'actress/'
-
 SAVE_DIR = "./images"
 if not os.path.isdir(SAVE_DIR):
     os.mkdir(SAVE_DIR)
@@ -259,7 +257,7 @@ def upload():
     img1 = request.files['image']
                 # ファイルのチェック
     if img1 and allowed_file(img1.filename):
-        img1
+        img1_secure = secure_filename(img1)
     else:
         flash('画像ファイルを入れてください','failed')
         sys.exit(1)
@@ -270,49 +268,46 @@ def upload():
     ret = {}
     Img =  Image.open(img1)
     dt_now = datetime.now().strftime("%Y_%m_%d%_H_%M_%S_%f")
-    save_path = os.path.join(SAVE_DIR, dt_now + ".jpeg")
+    save_path = os.path.join(SAVE_DIR, dt_now + "." + img1_secure)
     Img.save(save_path)
 
     img1 = glob.glob(save_path)
     img_url = img1[0]
     
-    #####################################3
+    #####################################
 
-    if SUB_DIR == 'actress/':
+    target_img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    target_img = cv2.resize(target_img, img_size)
 
-    
-        target_img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-        target_img = cv2.resize(target_img, img_size)
+    bf = cv2.BFMatcher(cv2.NORM_HAMMING)
+    # detector = cv2.ORB_create()
+    detector = cv2.AKAZE_create()
+    (_, target_des) = detector.detectAndCompute(target_img, None)
+    # conn = psycopg2.connect(
+    # host = "0.0.0.0",
+    # port = 5432,
+    # database=POSTG_DB,
+    # user=POSTG_ID,
+    # password=POSTG_PW)
+    c = conn.cursor()
+    c.execute('SELECT * FROM flask_similar')
+    rows = c.fetchall()
+    for row in rows:
+        if not row[1].endswith(('.png', '.jpg', '.jpeg')):
+            continue
 
-        bf = cv2.BFMatcher(cv2.NORM_HAMMING)
-        # detector = cv2.ORB_create()
-        detector = cv2.AKAZE_create()
-        (_, target_des) = detector.detectAndCompute(target_img, None)
-        # conn = psycopg2.connect(
-        # host = "0.0.0.0",
-        # port = 5432,
-        # database=POSTG_DB,
-        # user=POSTG_ID,
-        # password=POSTG_PW)
-        c = conn.cursor()
-        c.execute('SELECT * FROM flask_similar')
-        rows = c.fetchall()
-        for row in rows:
-            if not row[1].endswith(('.png', '.jpg', '.jpeg')):
-                continue
-
-            try:
-                numpy_img_data = np.array(row[2][row[1]]).astype(np.uint8)
-                matches = bf.match(target_des, numpy_img_data)
-                dist = [m.distance for m in matches]
-                score = sum(dist) / len(dist)
-                if score <= 100:
-                    score = 100
-                score = 100.0 / score
-            except cv2.error:
-                score = 100000
-            ret[row[1]] = score
-        conn.close()
+        try:
+            numpy_img_data = np.array(row[2][row[1]]).astype(np.uint8)
+            matches = bf.match(target_des, numpy_img_data)
+            dist = [m.distance for m in matches]
+            score = sum(dist) / len(dist)
+            if score <= 100:
+                score = 100
+            score = 100.0 / score
+        except cv2.error:
+            score = 100000
+        ret[row[1]] = score
+    conn.close()
 
     ############################################################
     
@@ -370,41 +365,40 @@ def handle_image_message(event):
     ret = {}
 
 #     #####################################
-    if SUB_DIR == 'actress/':
 
-        filename = SAVE_DIR +"/" + filename[0]
-        target_img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
-        target_img = cv2.resize(target_img, img_size)
+    filename = SAVE_DIR +"/" + filename[0]
+    target_img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
+    target_img = cv2.resize(target_img, img_size)
 
-        bf = cv2.BFMatcher(cv2.NORM_HAMMING)
-        # detector = cv2.ORB_create()
-        detector = cv2.AKAZE_create()
-        (_, target_des) = detector.detectAndCompute(target_img, None)
-        # conn = psycopg2.connect(
-        # host = "0.0.0.0",
-        # port = 5432,
-        # database=POSTG_DB,
-        # user=POSTG_ID,
-        # password=POSTG_PW)
-        c = conn.cursor()
-        c.execute('SELECT * FROM flask_similar')
-        rows = c.fetchall()
-        for row in rows:
-            if not row[1].endswith(('.png', '.jpg', '.jpeg')):
-                continue
+    bf = cv2.BFMatcher(cv2.NORM_HAMMING)
+    # detector = cv2.ORB_create()
+    detector = cv2.AKAZE_create()
+    (_, target_des) = detector.detectAndCompute(target_img, None)
+    # conn = psycopg2.connect(
+    # host = "0.0.0.0",
+    # port = 5432,
+    # database=POSTG_DB,
+    # user=POSTG_ID,
+    # password=POSTG_PW)
+    c = conn.cursor()
+    c.execute('SELECT * FROM flask_similar')
+    rows = c.fetchall()
+    for row in rows:
+        if not row[1].endswith(('.png', '.jpg', '.jpeg')):
+            continue
 
-            try:
-                numpy_img_data = np.array(row[2][row[1]]).astype(np.uint8)
-                matches = bf.match(target_des, numpy_img_data)
-                dist = [m.distance for m in matches]
-                score = sum(dist) / len(dist)
-                if score <= 100:
-                    score = 100
-                score = 100.0 / score
-            except cv2.error:
-                score = 100000
-            ret[row[1]] = score
-        conn.close()
+        try:
+            numpy_img_data = np.array(row[2][row[1]]).astype(np.uint8)
+            matches = bf.match(target_des, numpy_img_data)
+            dist = [m.distance for m in matches]
+            score = sum(dist) / len(dist)
+            if score <= 100:
+                score = 100
+            score = 100.0 / score
+        except cv2.error:
+            score = 100000
+        ret[row[1]] = score
+    conn.close()
 #     ############################################################
     
     
