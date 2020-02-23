@@ -208,7 +208,7 @@ if not os.path.isdir(SAVE_DIR):
 
 
 # アップロードされる拡張子の制限
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'PNG', 'JPG', 'JPEG', 'gif', 'GIF'])
 app.config['UPLOAD_FOLDER'] = SAVE_DIR
 
 
@@ -312,6 +312,9 @@ def upload():
     ############################################################
     
     dic_sorted = sorted(ret.items(), reverse=True,key=lambda x:x[1])[:3]
+    # dic_sorted = sorted(ret.items(), reverse=True,key=lambda x:x[1])[:10]
+    # dic_sorted = random.sample(dic_sorted,2)
+    # dic_sorted = sorted(dic_sorted, reverse=True,key=lambda x:x[1])
     estimated_d =[]
     exists_img =[]
     for file in dic_sorted:
