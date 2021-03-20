@@ -35,7 +35,7 @@ greenlet==0.4.12
 grpcio==1.19.0
 gunicorn==19.9.0
 heapdict==1.0.0
-Jinja2==2.10
+Jinja2==2.11.3
 jsonschema==2.6.0
 line-bot-sdk==1.12.1
 numpy==1.16.2
