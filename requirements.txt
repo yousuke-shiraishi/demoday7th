@@ -27,7 +27,7 @@ fast-histogram==0.5
 fastcache==1.0.2
 filelock==2.0.13
 Flask==1.1.1
-Flask-Cors==3.0.3
+Flask-Cors==3.0.9
 Flask-HTTPAuth==3.3.0
 Flask-Login==0.4.1
 Flask-WTF==0.14.2
