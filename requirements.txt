@@ -40,7 +40,7 @@ jsonschema==2.6.0
 line-bot-sdk==1.12.1
 numpy==1.16.2
 opencv-contrib-python==4.1.0.25
-opencv-python==3.4.5.20
+opencv-python==4.2.0.32
 opencv-python-headless==4.1.0.25
 openpyxl==2.4.10
 path.py==10.5
